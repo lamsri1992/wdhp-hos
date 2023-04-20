@@ -213,7 +213,7 @@ app.get('/patient', async (req, res) => {
             'person.birth,person.sex,person.idcard,person.bloodgroup,person.allergic ' +
             'FROM person ' +
             'LEFT JOIN _tmpprename_code on _tmpprename_code.prenamecode = person.prename ' +
-            'WHERE date_format(dateupdate, "%Y-%m-%d") = CURDATE() AND person.pcucodeperson = "'+ h_code +'"',
+            'WHERE date_format(dateupdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND person.pcucodeperson = "'+ h_code +'"',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -265,7 +265,7 @@ app.get('/visit', async (req, res) => {
     try {
         api_connection.query('SELECT visit.visitdate,visit.pcucode,visit.visitno,visit.pid,visit.symptoms,visit.weight,visit.height,visit.pressure,visit.temperature,visit.pulse,visit.respri ' +
             'FROM visit ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") = CURDATE() visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03"',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -318,7 +318,7 @@ app.get('/diag', async (req, res) => {
             'FROM visitdiag ' +
             'LEFT JOIN visit ON visit.visitno = visitdiag.visitno ' +
             'LEFT JOIN cdisease ON cdisease.diseasecode = visitdiag.diagcode ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") = CURDATE() AND visit.pcucode = "'+ h_code +'"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'"',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -366,7 +366,7 @@ app.get('/drug', async (req, res) => {
             'FROM visitdrug ' +
             'LEFT JOIN visit ON visit.visitno = visitdrug.visitno ' +
             'LEFT JOIN cdrug ON cdrug.drugcode = visitdrug.drugcode ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") = CURDATE() AND visit.pcucode = "'+ h_code +'"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'"',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
