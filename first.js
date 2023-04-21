@@ -68,7 +68,7 @@ app.get('/all_patient', async (req, res) => {
                     })
                 );
                 var ProgressBar = require('progress');
-                var count = 80 / keyCount;
+                var count = 20 / keyCount;
                 var bar = new ProgressBar('Processing [ :percent ]', { total: keyCount });
                 var timer = setInterval(function () {
                 bar.tick();
@@ -119,7 +119,7 @@ app.get('/all_visit', async (req, res) => {
                     })
                 );
                 var ProgressBar = require('progress');
-                var count = 80 / keyCount;
+                var count = 20 / keyCount;
                 var bar = new ProgressBar('Processing [ :percent ]', { total: keyCount });
                 var timer = setInterval(function () {
                 bar.tick();
@@ -166,7 +166,7 @@ app.get('/all_diag', async (req, res) => {
                     })
                 );
                 var ProgressBar = require('progress');
-                var count = 80 / keyCount;
+                var count = 20 / keyCount;
                 var bar = new ProgressBar('Processing [ :percent ]', { total: keyCount });
                 var timer = setInterval(function () {
                 bar.tick();
@@ -215,7 +215,7 @@ app.get('/all_drug', async (req, res) => {
                     })
                 );
                 var ProgressBar = require('progress');
-                var count = 80 / keyCount;
+                var count = 20 / keyCount;
                 var bar = new ProgressBar('Processing [ :percent ]', { total: keyCount });
                 var timer = setInterval(function () {
                 bar.tick();
