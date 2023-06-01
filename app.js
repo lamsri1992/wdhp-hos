@@ -42,7 +42,7 @@ app.listen(3000, function () {
 })
 
 // Patient
-cron.schedule('00 20 * * *', function () { 
+cron.schedule('00 10 * * *', function () { 
     let d = new Date(Date.now()).toLocaleString(); //แสดงวันที่และเวลา
     console.log("------------------------------------------");
     console.log(`Running Cron Job ${d}`);;
@@ -76,7 +76,7 @@ cron.schedule('00 20 * * *', function () {
 });
 
 // Visit
-cron.schedule('05 20 * * *', function () { 
+cron.schedule('05 10 * * *', function () { 
     let d = new Date(Date.now()).toLocaleString(); //แสดงวันที่และเวลา
     console.log("------------------------------------------");
     console.log(`Running Cron Job ${d}`);;
@@ -110,7 +110,7 @@ cron.schedule('05 20 * * *', function () {
 });
 
 // Diag
-cron.schedule('10 20 * * *', function () { 
+cron.schedule('10 10 * * *', function () { 
     let d = new Date(Date.now()).toLocaleString(); //แสดงวันที่และเวลา
     console.log("------------------------------------------");
     console.log(`Running Cron Job ${d}`);;
@@ -144,7 +144,7 @@ cron.schedule('10 20 * * *', function () {
 });
 
 // Drug
-cron.schedule('15 20 * * *', function () { 
+cron.schedule('15 10 * * *', function () { 
     let d = new Date(Date.now()).toLocaleString(); //แสดงวันที่และเวลา
     console.log("------------------------------------------");
     console.log(`Running Cron Job ${d}`);;
@@ -219,7 +219,7 @@ app.get('/patient', async (req, res) => {
                     console.log(err)
                     return res.status(400).send()
                 }
-            // res.status(200).json(result)
+            res.status(200).json(result)
                 var jsArray = result;
                 var keyCount  = Object.keys(result).length;
                 jsArray.forEach(jsdata =>
@@ -265,7 +265,7 @@ app.get('/visit', async (req, res) => {
     try {
         api_connection.query('SELECT visit.visitdate,visit.pcucode,visit.visitno,visit.pid,visit.symptoms,visit.weight,visit.height,visit.pressure,visit.temperature,visit.pulse,visit.respri ' +
             'FROM visit ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -318,7 +318,7 @@ app.get('/diag', async (req, res) => {
             'FROM visitdiag ' +
             'LEFT JOIN visit ON visit.visitno = visitdiag.visitno ' +
             'LEFT JOIN cdisease ON cdisease.diseasecode = visitdiag.diagcode ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -366,7 +366,7 @@ app.get('/drug', async (req, res) => {
             'FROM visitdrug ' +
             'LEFT JOIN visit ON visit.visitno = visitdrug.visitno ' +
             'LEFT JOIN cdrug ON cdrug.drugcode = visitdrug.drugcode ' +
-            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'"',
+            'WHERE date_format(visit.visitdate, "%Y-%m-%d") >= CURDATE() - INTERVAL 1 DAY AND visit.pcucode = "'+ h_code +'" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)

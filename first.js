@@ -37,7 +37,7 @@ app.get('/all_patient', async (req, res) => {
             
     try {
         api_connection.query('SELECT person.pcucodeperson,person.pid,person.hcode,_tmpprename_code.prename,person.fname,person.lname,'+
-            'person.birth,person.sex,person.idcard,person.bloodgroup,person.allergic ' +
+            'person.birth,person.sex,person.idcard,person.bloodgroup ' +
             'FROM person ' +
             'LEFT JOIN _tmpprename_code on _tmpprename_code.prenamecode = person.prename ' +
             'WHERE person.pcucodeperson = "'+ h_code +'"',
@@ -49,7 +49,7 @@ app.get('/all_patient', async (req, res) => {
                 var jsArray = result;
                 var keyCount  = Object.keys(result).length;
                 jsArray.forEach(jsdata =>
-                    connection.query("INSERT INTO h_patient (pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,bloodgroup,allergic) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    connection.query("INSERT INTO h_patient (pcucodeperson,pid,hcode,prename,fname,lname,birth,sex,idcard,bloodgroup) VALUES (?,?,?,?,?,?,?,?,?,?)",
                     [
                         jsdata.pcucodeperson,
                         jsdata.pid,
@@ -60,8 +60,7 @@ app.get('/all_patient', async (req, res) => {
                         jsdata.birth,
                         jsdata.sex,
                         jsdata.idcard,
-                        jsdata.bloodgroup,
-                        jsdata.allergic
+                        jsdata.bloodgroup
                     ],
                      (err, results) => {
                         if (err) throw err
@@ -91,7 +90,7 @@ app.get('/all_visit', async (req, res) => {
     try {
         api_connection.query('SELECT visit.visitdate,visit.pcucode,visit.visitno,visit.pid,visit.symptoms,visit.weight,visit.height,visit.pressure,visit.temperature,visit.pulse,visit.respri ' +
             'FROM visit ' +
-            'WHERE visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03" AND visitdate >= "2020-01-01" AND visitdate <= "2023-12-31"',
+            'WHERE visit.pcucode = "'+ h_code +'" AND visit.flagservice = "03" AND visitdate >= "2020-01-01" AND visitdate <= "2023-05-31" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -144,7 +143,7 @@ app.get('/all_diag', async (req, res) => {
             'FROM visitdiag ' +
             'LEFT JOIN visit ON visit.visitno = visitdiag.visitno ' +
             'LEFT JOIN cdisease ON cdisease.diseasecode = visitdiag.diagcode ' +
-            'WHERE visit.pcucode = "'+ h_code +'" AND visitdate >= "2020-01-01" AND visitdate <= "2023-12-31"',
+            'WHERE visit.pcucode = "'+ h_code +'" AND visitdate >= "2020-01-01" AND visitdate <= "2023-05-31" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -192,7 +191,7 @@ app.get('/all_drug', async (req, res) => {
             'FROM visitdrug ' +
             'LEFT JOIN visit ON visit.visitno = visitdrug.visitno ' +
             'LEFT JOIN cdrug ON cdrug.drugcode = visitdrug.drugcode ' +
-            'WHERE visit.pcucode = "'+ h_code +'" AND visitdate >= "2020-01-01" AND visitdate <= "2023-12-31"',
+            'WHERE visit.pcucode = "'+ h_code +'" AND visitdate >= "2020-01-01" AND visitdate <= "2023-05-31" ORDER BY visit.visitdate ASC',
             (err, result, field) => {
                 if (err) {
                     console.log(err)
